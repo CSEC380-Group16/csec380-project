@@ -1,2 +1,2 @@
 FROM nginx:1.17
-COPY index.html /usr/share/nginx/html
+COPY ./htdocs/ /usr/share/nginx/html
