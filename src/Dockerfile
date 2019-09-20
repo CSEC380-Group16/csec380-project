@@ -1,2 +1,2 @@
-FROM nginx:1.17
-COPY ./htdocs/ /usr/share/nginx/html
+FROM httpd:latest
+COPY ./htdocs/ /usr/local/apache2/htdocs

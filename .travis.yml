@@ -1,0 +1,20 @@
+language: python
+python:
+  - "3.6"
+  - "3.7"
+
+service: 
+  - docker
+
+# build docker image and run container
+before_install:
+  - docker build -t helloworld src/
+  - docker run -d -p 80:80 --name hw helloworld
+
+# commands to install dependencies
+install:
+  - pip install -r requirements.txt
+
+# command to run tests
+script: 
+  - pytest tests/
