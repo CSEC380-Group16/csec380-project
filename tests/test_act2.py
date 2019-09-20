@@ -3,7 +3,6 @@ The Python script to test if the web page displays "Hello World"
 """
 
 import urllib3
-=======
 from bs4 import BeautifulSoup
 
 def test_hello_world():
