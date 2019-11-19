@@ -77,10 +77,10 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             } else{
                 echo "Oops! Something went wrong. Please try again later.";
             }
+            // Close connection
+            mysqli_close($stmt);
         }
         
-        // Close statement
-        mysqli_stmt_close($stmt);
     }
 
 }
