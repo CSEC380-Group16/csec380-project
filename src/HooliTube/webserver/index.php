@@ -102,13 +102,15 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.css">
     <style type="text/css">
         body{ font: 14px sans-serif; }
-        .wrapper{ width: 350px; padding: 20px; }
+	.wrapper{ width: 350px; padding: 20px; margin:0 auto; width:400px;}
+	.form-group{ margin:0 auto; width:200px;}
+	.submit-form{ padding:10px; margin:0 auto; width:90px;}
     </style>
 </head>
 <body>
     <div class="wrapper">
-        <h2>Welcome to HooliTube!</h2>
-        <p>Sign up for our totally secure video sharing platform today!</p>
+        <h2 align="center">Welcome to HooliTube!</h2>
+        <p align="center">Sign up for our totally secure video sharing platform today!</p>
         <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
             <div class="form-group <?php echo (!empty($username_err)) ? 'has-error' : ''; ?>">
                 <label>Username</label>
@@ -125,10 +127,10 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                 <input type="password" name="confirm_password" class="form-control" value="<?php echo $confirm_password; ?>">
                 <span class="help-block"><?php echo $confirm_password_err; ?></span>
             </div>
-            <div class="form-group">
+            <div class="submit-form">
                 <input type="submit" class="btn btn-primary" value="Submit">
             </div>
-            <p>Already have an account? <a href="login.php">Login here</a>.</p>
+            <p align="center">Already have an account? <a href="login.php">Login here</a>.</p>
         </form>
     </div>
 </body>
