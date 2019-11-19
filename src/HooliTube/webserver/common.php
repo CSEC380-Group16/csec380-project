@@ -1,16 +1,16 @@
 <?php
-
-$dbhost = 'mariadb:3306';
-$dbuser = 'root';
-$dbpass = 'agoodpassword';
-$dbname = 'hoolitube';
-$mysqli = new mysqli($dbhost, $dbuser, $dbpass, $dbname);
-if ($mysqli->connect_errno) {
-    echo "Error: Failed to make a MySQL connection, here is why: \n";
-    echo "Errno: " . $mysqli->connect_errno . "\n";
-    echo "Error: " . $mysqli->connect_error . "\n";
-    die( "Sorry, this website is experiencing problems.");
+/* Database credentials. Assuming you are running MySQL
+server with default setting (user 'root' with no password) */
+define('DB_SERVER', 'mariadb');
+define('DB_USERNAME', 'root');
+define('DB_PASSWORD', 'agoodpassword');
+define('DB_NAME', 'hoolitube');
+ 
+/* Attempt to connect to MySQL database */
+$link = mysqli_connect(DB_SERVER, DB_USERNAME, DB_PASSWORD, DB_NAME);
+ 
+// Check connection
+if($link === false){
+    die("ERROR: Could not connect. " . mysqli_connect_error());
 }
-
-
 ?>
