@@ -8,7 +8,7 @@ service:
 
 # build docker image and run container
 before_install:
-  - docker build -t helloworld src/
+  - docker build -t helloworld src/act2
   - docker run -d -p 80:80 --name hw helloworld
 
 # commands to install dependencies
