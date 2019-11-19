@@ -78,21 +78,12 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             else{
                 echo "Oops! Something went wrong. Please try again later.";
             }
-<<<<<<< HEAD
             // Close statement
             mysqli_stmt_close($stmt);
         }
     }
     // Close connection
     mysqli_close($link);
-=======
-            // Close connection
-            mysqli_close($stmt);
-        }
-        
-    }
-
->>>>>>> 540f3ba15b2aeefd978cb1fc0c43041cc01609df
 }
 ?>
 
@@ -100,7 +91,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Login to HooliTube!</title>
+    <title>Login</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.css">
     <style type="text/css">
         body{ font: 14px sans-serif; }
@@ -109,7 +100,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 </head>
 <body>
     <div class="wrapper">
-        <h2>Login</h2>
+        <h2>Login to HooliTube!</h2>
         <p>Please fill in your credentials to login.</p>
         <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
             <div class="form-group <?php echo (!empty($username_err)) ? 'has-error' : ''; ?>">
