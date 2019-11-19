@@ -13,6 +13,7 @@ services:
     command: --max-allowed-packet=128MB
     restart: always
     volumes:
+      - hoolitube:/var/lib/mysql
     environment:
-      MYSQL_ROOT_PASSWORD: 
-      MYSQL_DATABASE: 
+      MYSQL_ROOT_PASSWORD: agoodpassword
+      MYSQL_DATABASE: hoolitube
