@@ -3,6 +3,7 @@ version: "3"
 services:
   web:
     build: .
+    container_name: hoolitube
     ports:
       - 80:80
 
