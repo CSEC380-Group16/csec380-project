@@ -13,10 +13,12 @@ SET time_zone = "+00:00";
 
 CREATE TABLE users (
   user_id   INT UNSIGNED AUTO_INCREMENT,
-  user_name VARCHAR(15),
+  username VARCHAR(15),
+  password  VARCHAR(64),
 
   CONSTRAINT users_user_id_pk PRIMARY KEY(user_id)
 );
+
 
 CREATE TABLE videos (
   video_id    INT UNSIGNED AUTO_INCREMENT,
