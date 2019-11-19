@@ -37,3 +37,6 @@ CREATE TABLE sessions (
   CONSTRAINT sessions_session_id_pk PRIMARY KEY(session_id),
   CONSTRAINT sessions_user_id_fk FOREIGN KEY(user_id) REFERENCES users(user_id)
 );
+
+-- Populate with test users
+INSERT INTO users(username, password) VALUES('test','password');
