@@ -1,7 +1,5 @@
 <?php
-// Initialize the session
 session_start();
-
 // Check if the user is already logged in, if yes then redirect him to welcome page
 if(isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true){
     header("location: home.php");
@@ -57,6 +55,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                         if(password_verify($password, $hashed_password)){
                             // Password is correct, so start a new session
                             session_start();
+                            session_regenerate_id(TRUE);
 
                             // Store data in session variables
                             $_SESSION["loggedin"] = true;
