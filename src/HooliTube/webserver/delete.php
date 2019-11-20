@@ -1,5 +1,4 @@
 <?php
-// Initialize the session
 session_start();
 
 // Check if the user is logged in, if not then redirect him to login page
@@ -23,7 +22,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
 </head>
 <body>
     <div class="page-header">
-        <h1>Welcome to HooliTube, <b><?php echo htmlspecialchars($_SESSION["username"]); ?></b>!</h1>
+        <h1>Be careful when deleting your videos, <b><?php echo htmlspecialchars($_SESSION["username"]); ?></b>!</h1>
     </div>
 
     <div class="sidenav">
