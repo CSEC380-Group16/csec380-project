@@ -28,12 +28,3 @@ CREATE TABLE videos (
   CONSTRAINT videos_video_id_pk PRIMARY KEY(video_id),
   CONSTRAINT videos_user_id_fk FOREIGN KEY(user_id) REFERENCES users(user_id)
 );
-
-
-CREATE TABLE sessions (
-  session_id  VARCHAR(32),
-  user_id     INT UNSIGNED,
-
-  CONSTRAINT sessions_session_id_pk PRIMARY KEY(session_id),
-  CONSTRAINT sessions_user_id_fk FOREIGN KEY(user_id) REFERENCES users(user_id)
-);
