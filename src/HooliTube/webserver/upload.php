@@ -7,6 +7,9 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
     exit;
 }
 
+// Include config file
+require_once "common.php";
+
 if(isset($_POST['submit'])){
     $name = $_FILES['file']['name'];
     $temp = $_FILES['file']['tmp_name'];
@@ -17,8 +20,23 @@ if(isset($_POST['submit'])){
     else{
         echo "NOT uploaded!";
     }
-}
 
+    $session_id = session_id();
+    $sql = "SELECT user_id FROM sessions WHERE session_id = ?";
+    $stmt = mysqli_prepare($link,$sql);
+    mysqli_stmt_bind_param($stmt, "s", $session_id);
+    mysqli_stmt_execute($stmt);
+    mysqli_stmt_store_result($stmt);
+    mysqli_stmt_bind_result($stmt, $user_id);
+    mysqli_stmt_fetch($stmt);
+
+
+
+    $sql = "INSERT INTO videos(video_name, user_id) VALUES(?, ?)";
+    $stmt = mysqli_prepare($link,$sql);
+    mysqli_stmt_bind_param($stmt ,"si", $name, $user_id);
+    mysqli_stmt_execute($stmt);
+}
 
 ?>
 
@@ -37,7 +55,7 @@ if(isset($_POST['submit'])){
     <div class="page-header">
         <h1>Upload and contribute to our amazing selection, <b><?php echo htmlspecialchars($_SESSION["username"]); ?></b>!</h1>
     </div>
-    
+
     <div class="sidenav">
         <a href="browse.php" class="btn btn-default btn-lg">Browse</a>
         <br>
@@ -59,6 +77,7 @@ if(isset($_POST['submit'])){
     // if(isset($_POST['submit'])){
     //     echo "<br />".$name." has been uploaded.";
     // }
+
 
     ?>
 
