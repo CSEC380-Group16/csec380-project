@@ -28,3 +28,14 @@ CREATE TABLE videos (
   CONSTRAINT videos_video_id_pk PRIMARY KEY(video_id),
   CONSTRAINT videos_user_id_fk FOREIGN KEY(user_id) REFERENCES users(user_id)
 );
+
+
+CREATE TABLE sessions (
+  session_id  VARCHAR(64),
+  user_id     INT UNSIGNED,
+  is_locked   TINYINT(1) DEFAULT 0,
+  attempts    INT UNSIGNED DEFAULT 0 NOT NULL,
+  lockout_time DATETIME,
+
+  CONSTRAINT sessions_session_id PRIMARY KEY(session_id)
+);
