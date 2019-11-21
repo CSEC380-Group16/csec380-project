@@ -1,5 +1,4 @@
 <?php
-// Initialize the session
 session_start();
 
 // Check if the user is logged in, if not then redirect him to login page
@@ -14,7 +13,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Landing Page</title>
+    <title>Browse HooliTube</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.css">
     <link rel="stylesheet" href="css/sidebar.css">
     <style type="text/css">
@@ -23,7 +22,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
 </head>
 <body>
     <div class="page-header">
-        <h1>Welcome to HooliTube, <b><?php echo htmlspecialchars($_SESSION["username"]); ?></b>!</h1>
+        <h1>Happy browsing, <b><?php echo htmlspecialchars($_SESSION["username"]); ?></b>!</h1>
     </div>
 
     <div class="sidenav">
@@ -37,7 +36,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
     </div>
 
     <div class="main">
-
+    <video width='800' height='600' controls><source src='videos/testvideo.mov' type='video/mp4'>Your browser is bad.</video>
     </div>
 
 </body>

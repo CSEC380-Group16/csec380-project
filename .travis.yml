@@ -10,6 +10,8 @@ service:
 before_install:
   - docker build -t helloworld src/act2
   - docker run -d -p 80:80 --name hw helloworld
+  # - docker-compose -f src/HooliTube/docker-compose.yml build
+  # - docker-compose -f src/HooliTube/docker-compose.yml up -d
 
 # commands to install dependencies
 install:
@@ -17,4 +19,4 @@ install:
 
 # command to run tests
 script: 
-  - pytest tests/
+  - pytest tests/test_act2.py

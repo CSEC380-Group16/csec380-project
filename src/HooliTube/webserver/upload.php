@@ -1,11 +1,17 @@
 <?php
-// Initialize the session
 session_start();
 
 // Check if the user is logged in, if not then redirect him to login page
 if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
     header("location: login.php");
     exit;
+}
+
+if(isset($_POST['submit'])){
+    $name = $_FILES['file']['name'];
+    $temp = $_FILES['file']['tmp_name'];
+
+    move_uploaded_file($temp, "videos/".$name);
 }
 
 ?>
@@ -23,9 +29,9 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
 </head>
 <body>
     <div class="page-header">
-        <h1>Welcome to HooliTube, <b><?php echo htmlspecialchars($_SESSION["username"]); ?></b>!</h1>
+        <h1>Upload and contribute to our amazing selection, <b><?php echo htmlspecialchars($_SESSION["username"]); ?></b>!</h1>
     </div>
-
+    
     <div class="sidenav">
         <a href="browse.php" class="btn btn-default btn-lg">Browse</a>
         <br>
@@ -37,6 +43,11 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
     </div>
 
     <div class="main">
+
+    <form action="upload.php" method="POST" enctype="multipart/form-data">
+        <input type="file" name="file" />
+        <input type="submit" name="submit" value="Upload" />
+    </form>
 
     </div>
 
