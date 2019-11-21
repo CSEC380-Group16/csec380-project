@@ -8,13 +8,10 @@ service:
 
 # build docker image and run container
 before_install:
-  # The following 2 lines are commented out because
-  # they are no longer needed. These were for the 
-  # activity 2 tests
-  # - docker build -t helloworld src/act2
-  # - docker run -d -p 80:80 --name hw helloworld
-  - docker-compose -f src/HooliTube/docker-compose.yml build
-  - docker-compose -f src/HooliTube/docker-compose.yml up -d
+  - docker build -t helloworld src/act2
+  - docker run -d -p 80:80 --name hw helloworld
+  # - docker-compose -f src/HooliTube/docker-compose.yml build
+  # - docker-compose -f src/HooliTube/docker-compose.yml up -d
 
 # commands to install dependencies
 install:
@@ -22,4 +19,4 @@ install:
 
 # command to run tests
 script: 
-  - pytest tests/
+  - pytest tests/test_act2.py
