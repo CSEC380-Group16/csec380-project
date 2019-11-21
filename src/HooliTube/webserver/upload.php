@@ -16,26 +16,27 @@ if(isset($_POST['submit'])){
 
     if(move_uploaded_file($temp, "videos/".$name)){
         echo "Uploaded!";
+        $session_id = session_id();
+        $sql = "SELECT user_id FROM sessions WHERE session_id = ?";
+        $stmt = mysqli_prepare($link,$sql);
+        mysqli_stmt_bind_param($stmt, "s", $session_id);
+        mysqli_stmt_execute($stmt);
+        mysqli_stmt_store_result($stmt);
+        mysqli_stmt_bind_result($stmt, $user_id);
+        mysqli_stmt_fetch($stmt);
+
+
+
+        $sql = "INSERT INTO videos(video_name, user_id) VALUES(?, ?)";
+        $stmt = mysqli_prepare($link,$sql);
+        mysqli_stmt_bind_param($stmt ,"si", $name, $user_id);
+        mysqli_stmt_execute($stmt);
     }
     else{
         echo "NOT uploaded!";
     }
 
-    $session_id = session_id();
-    $sql = "SELECT user_id FROM sessions WHERE session_id = ?";
-    $stmt = mysqli_prepare($link,$sql);
-    mysqli_stmt_bind_param($stmt, "s", $session_id);
-    mysqli_stmt_execute($stmt);
-    mysqli_stmt_store_result($stmt);
-    mysqli_stmt_bind_result($stmt, $user_id);
-    mysqli_stmt_fetch($stmt);
 
-
-
-    $sql = "INSERT INTO videos(video_name, user_id) VALUES(?, ?)";
-    $stmt = mysqli_prepare($link,$sql);
-    mysqli_stmt_bind_param($stmt ,"si", $name, $user_id);
-    mysqli_stmt_execute($stmt);
 }
 
 ?>

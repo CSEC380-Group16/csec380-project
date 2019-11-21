@@ -36,7 +36,6 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
     </div>
 
     <div class="main">
-    <video width='800' height='600' controls><source src='videos/testvideo.mov' type='video/mp4'>Your browser is bad.</video>
     <?php
     // Include config file
     require_once "common.php";
@@ -47,7 +46,8 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
         // output data of each row
         while($row = mysqli_fetch_assoc($result)) {
             // echo $row["video_name"]. "" . $row["firstname"]. " " . $row["lastname"]. "<br>";
-            echo "<video width='800' height='600' controls><source src='videos/'" .$row["video_name"]. " type='video/mp4'>Your browser is bad.</video>";
+            echo "<p>" . $row["video_name"] ."</p>" ;
+            echo "<video width='800' height='600' controls><source src='videos/" . $row["video_name"] . "' type='video/mp4'>Your browser is bad.</video>";
         }
     } else {
         echo "Sorry, no vidoes have been uploaded!";
