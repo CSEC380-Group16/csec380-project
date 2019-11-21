@@ -11,8 +11,14 @@ if(isset($_POST['submit'])){
     $name = $_FILES['file']['name'];
     $temp = $_FILES['file']['tmp_name'];
 
-    move_uploaded_file($temp, "videos/".$name);
+    if(move_uploaded_file($temp, "videos/".$name)){
+        echo "uploaded";
+    }
+    else{
+        echo "NOT uploaded";
+    }
 }
+
 
 ?>
 
@@ -48,6 +54,13 @@ if(isset($_POST['submit'])){
         <input type="file" name="file" />
         <input type="submit" name="submit" value="Upload" />
     </form>
+
+    <?php
+    // if(isset($_POST['submit'])){
+    //     echo "<br />".$name." has been uploaded.";
+    // }
+
+    ?>
 
     </div>
 
