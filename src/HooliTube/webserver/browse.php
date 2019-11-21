@@ -37,6 +37,22 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
 
     <div class="main">
     <video width='800' height='600' controls><source src='videos/testvideo.mov' type='video/mp4'>Your browser is bad.</video>
+    <?php
+    // Include config file
+    require_once "common.php";
+
+    $sql = "SELECT video_id, video_name, user_id FROM videos";
+    $result = mysqli_query($link, $sql);
+    if (mysqli_num_rows($result) > 0) {
+        // output data of each row
+        while($row = mysqli_fetch_assoc($result)) {
+            // echo $row["video_name"]. "" . $row["firstname"]. " " . $row["lastname"]. "<br>";
+            echo "<video width='800' height='600' controls><source src='videos/'" .$row["video_name"]. " type='video/mp4'>Your browser is bad.</video>";
+        }
+    } else {
+        echo "Sorry, no vidoes have been uploaded!";
+    }
+    ?>
     </div>
 
 </body>
