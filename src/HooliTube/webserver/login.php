@@ -12,9 +12,10 @@ if (session_id()==""){
 // populate session table
 $is_locked = $attempts = 0;
 $timestamp = date("Y-m-d H:i:s");
+$session_id = session_id();
 $sql = "INSERT INTO sessions (session_id, is_locked, attempts, lockout_time) VALUES(?,?,?,?)";
 $stmt = mysqli_prepare($link,$sql);
-mysqli_stmt_bind_param($stmt ,"siis", session_id(), $is_locked,$attempts, $timestamp);
+mysqli_stmt_bind_param($stmt ,"siis", $session_id, $is_locked,$attempts, $timestamp);
 mysqli_stmt_execute($stmt);
 
 
@@ -73,8 +74,9 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
                     $sql = "SELECT is_locked, attempts, lockout_time FROM sessions WHERE session_id = ?";
                     $lockout_time = "";
+                    $session_id = session_id();
                     $stmt2 = mysqli_prepare($link,$sql);
-                    mysqli_stmt_bind_param($stmt2, "s", session_id());
+                    mysqli_stmt_bind_param($stmt2, "s", $session_id);
                     mysqli_stmt_execute($stmt2);
                     mysqli_stmt_store_result($stmt2);
                     mysqli_stmt_bind_result($stmt2, $is_locked, $attempts, $lockout_time);
@@ -82,9 +84,10 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
                     if ($attempts > 4){
                       $timestamp = date("Y-m-d H:i:s");
+                      $session_id = session_id();
                       $sql = "UPDATE sessions SET is_locked = 1, lockout_time = ?, attempts = 0 WHERE session_id = ?";
                       $stmt2 = mysqli_prepare($link, $sql);
-                      mysqli_stmt_bind_param($stmt2, "ss", $timestamp, session_id());
+                      mysqli_stmt_bind_param($stmt2, "ss", $timestamp, $session_id);
                       mysqli_stmt_execute($stmt2);
                     }
 
@@ -93,14 +96,16 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                         $dif = strtotime(date("Y-m-d H:i:s")) - strtotime($lockout_time);
                         if ($dif >= 120)
                         {
+                          $session_id = session_id();
                           $sql = "UPDATE sessions SET is_locked = 0 WHERE session_id = ?";
                           $stmt2 = mysqli_prepare($link, $sql);
-                          mysqli_stmt_bind_param($stmt2, "s", session_id());
+                          mysqli_stmt_bind_param($stmt2, "s", $session_id);
                           mysqli_stmt_execute($stmt2);
 
                           $sql = "SELECT is_locked FROM sessions WHERE session_id = ?";
                           $stmt2 = mysqli_prepare($link,$sql);
-                          mysqli_stmt_bind_param($stmt2, "s", session_id());
+                          $session_id = session_id();
+                          mysqli_stmt_bind_param($stmt2, "s", $session_id);
                           mysqli_stmt_execute($stmt2);
                           mysqli_stmt_store_result($stmt2);
                           mysqli_stmt_bind_result($stmt2, $is_locked);
@@ -120,21 +125,23 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
                                 $sql = "UPDATE sessions SET user_id = ? WHERE session_id = ?";
                                 $stmt = mysqli_prepare($link, $sql);
+                                $session_id = session_id();
                                 if($stmt === false){
                                     die("ERROR: Could not connect. " . mysqli_connect_error());
                                 }
-                                mysqli_stmt_bind_param($stmt, "is", $user_id, session_id());
+                                mysqli_stmt_bind_param($stmt, "is", $user_id, $session_id);
                                 mysqli_stmt_execute($stmt);
 
                                 session_regenerate_id(TRUE);
 
                                 // populate session table
                                 $sql = "UPDATE sessions SET session_id = ?, is_locked = 0, attempts = 0 WHERE user_id = ?";
+                                $session_id = session_id();
                                 $stmt = mysqli_prepare($link, $sql);
                                 if($stmt === false){
                                     die("ERROR: Could not connect here. " . mysqli_connect_error());
                                 }
-                                mysqli_stmt_bind_param($stmt ,"si", session_id(), $user_id);
+                                mysqli_stmt_bind_param($stmt ,"si", $session_id, $user_id);
                                 mysqli_stmt_execute($stmt);
 
 
@@ -148,8 +155,9 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                             } else{
                                 // Display an error message if password is not valid
                                 $sql = "UPDATE sessions SET attempts=attempts+1 WHERE session_id = ?";
+                                $session_id = session_id();
                                 $stmt = mysqli_prepare($link,$sql);
-                                mysqli_stmt_bind_param($stmt ,"s", session_id());
+                                mysqli_stmt_bind_param($stmt ,"s", $session_id);
                                 mysqli_stmt_execute($stmt);
 
                                 $password_err = "The username or password you entered was not valid.";
