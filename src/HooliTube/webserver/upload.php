@@ -12,10 +12,10 @@ if(isset($_POST['submit'])){
     $temp = $_FILES['file']['tmp_name'];
 
     if(move_uploaded_file($temp, "videos/".$name)){
-        echo "uploaded";
+        echo "Uploaded!";
     }
     else{
-        echo "NOT uploaded";
+        echo "NOT uploaded!";
     }
 }
 
