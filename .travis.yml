@@ -8,8 +8,10 @@ service:
 
 # build docker image and run container
 before_install:
-  - docker build -t helloworld src/act2
-  - docker run -d -p 80:80 --name hw helloworld
+  # - docker build -t helloworld src/act2
+  # - docker run -d -p 80:80 --name hw helloworld
+  - docker-compose build src/HooliTube
+  - docker-compose up -d
 
 # commands to install dependencies
 install:
