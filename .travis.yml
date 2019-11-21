@@ -13,8 +13,8 @@ before_install:
   # activity 2 tests
   # - docker build -t helloworld src/act2
   # - docker run -d -p 80:80 --name hw helloworld
-  - docker-compose -f src/HooliTube/ build
-  - docker-compose -f src/HooliTube up -d
+  - docker-compose -f src/HooliTube/docker-compose.yml build
+  - docker-compose -f src/HooliTube/docker-compose.yml up -d
 
 # commands to install dependencies
 install:
