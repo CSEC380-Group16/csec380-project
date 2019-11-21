@@ -40,17 +40,18 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
     // Include config file
     require_once "common.php";
 
-    $sql = "SELECT video_id, video_name, user_id FROM videos";
+    $sql = "SELECT videos.video_name, users.username FROM videos JOIN users ON videos.user_id = users.user_id";
     $result = mysqli_query($link, $sql);
+
     if (mysqli_num_rows($result) > 0) {
         // output data of each row
         while($row = mysqli_fetch_assoc($result)) {
-            // echo $row["video_name"]. "" . $row["firstname"]. " " . $row["lastname"]. "<br>";
-            echo "<p>" . $row["video_name"] ."</p>" ;
-            echo "<video width='800' height='600' controls><source src='videos/" . $row["video_name"] . "' type='video/mp4'>Your browser is bad.</video>";
+
+            echo "<video width='800' height='450' controls><source src='videos/" . $row["video_name"] . "' type='video/mp4'>Your browser is bad.</video>";
+            echo "<h2>" . $row["video_name"] . " Uploaded by: ". $row["username"] ."</h2> <br>";
         }
     } else {
-        echo "Sorry, no vidoes have been uploaded!";
+        echo "<h2> Sorry, no vidoes have been uploaded! </h2>";
     }
     ?>
     </div>
