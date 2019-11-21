@@ -1,13 +1,30 @@
 <?php
 session_start();
+
+// Include config file
+require_once "common.php";
+
+if (session_id()==""){
+  session_regenerate_id(TRUE);
+
+}
+
+// populate session table
+$is_locked = $attempts = 0;
+$timestamp = date("Y-m-d H:i:s");
+$sql = "INSERT INTO sessions (session_id, is_locked, attempts, lockout_time) VALUES(?,?,?,?)";
+$stmt = mysqli_prepare($link,$sql);
+mysqli_stmt_bind_param($stmt ,"siis", session_id(), $is_locked,$attempts, $timestamp);
+mysqli_stmt_execute($stmt);
+
+
+
+
 // Check if the user is already logged in, if yes then redirect him to welcome page
 if(isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true){
     header("location: home.php");
     exit;
 }
-
-// Include config file
-require_once "common.php";
 
 // Define variables and initialize with empty values
 $username = $password = "";
@@ -51,24 +68,95 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                 if(mysqli_stmt_num_rows($stmt) == 1){
                     // Bind result variables
                     mysqli_stmt_bind_result($stmt, $user_id, $username, $hashed_password);
-                    if(mysqli_stmt_fetch($stmt)){
-                        if(password_verify($password, $hashed_password)){
-                            // Password is correct, so start a new session
-                            session_start();
-                            session_regenerate_id(TRUE);
 
-                            // Store data in session variables
-                            $_SESSION["loggedin"] = true;
-                            $_SESSION["user_id"] = $user_id;
-                            $_SESSION["username"] = $username;
+                    // Check for lockout
 
-                            // Redirect user to welcome page
-                            header("location: home.php");
-                        } else{
-                            // Display an error message if password is not valid
-                            $password_err = "The username or password you entered was not valid.";
+                    $sql = "SELECT is_locked, attempts, lockout_time FROM sessions WHERE session_id = ?";
+                    $lockout_time = "";
+                    $stmt2 = mysqli_prepare($link,$sql);
+                    mysqli_stmt_bind_param($stmt2, "s", session_id());
+                    mysqli_stmt_execute($stmt2);
+                    mysqli_stmt_store_result($stmt2);
+                    mysqli_stmt_bind_result($stmt2, $is_locked, $attempts, $lockout_time);
+                    mysqli_stmt_fetch($stmt2);
+
+                    if ($attempts > 4){
+                      $timestamp = date("Y-m-d H:i:s");
+                      $sql = "UPDATE sessions SET is_locked = 1, lockout_time = ?, attempts = 0 WHERE session_id = ?";
+                      $stmt2 = mysqli_prepare($link, $sql);
+                      mysqli_stmt_bind_param($stmt2, "ss", $timestamp, session_id());
+                      mysqli_stmt_execute($stmt2);
+                    }
+
+
+                    if ($is_locked == 1){
+                        $dif = strtotime(date("Y-m-d H:i:s")) - strtotime($lockout_time);
+                        if ($dif >= 120)
+                        {
+                          $sql = "UPDATE sessions SET is_locked = 0 WHERE session_id = ?";
+                          $stmt2 = mysqli_prepare($link, $sql);
+                          mysqli_stmt_bind_param($stmt2, "s", session_id());
+                          mysqli_stmt_execute($stmt2);
+
+                          $sql = "SELECT is_locked FROM sessions WHERE session_id = ?";
+                          $stmt2 = mysqli_prepare($link,$sql);
+                          mysqli_stmt_bind_param($stmt2, "s", session_id());
+                          mysqli_stmt_execute($stmt2);
+                          mysqli_stmt_store_result($stmt2);
+                          mysqli_stmt_bind_result($stmt2, $is_locked);
+                          mysqli_stmt_fetch($stmt2);
                         }
                     }
+
+
+                    if ($is_locked==0){
+
+                        if(mysqli_stmt_fetch($stmt)){
+
+                            if(password_verify($password, $hashed_password)){
+                                // Password is correct, so start a new session
+                                session_start();
+
+
+                                $sql = "UPDATE sessions SET user_id = ? WHERE session_id = ?";
+                                $stmt = mysqli_prepare($link, $sql);
+                                if($stmt === false){
+                                    die("ERROR: Could not connect. " . mysqli_connect_error());
+                                }
+                                mysqli_stmt_bind_param($stmt, "is", $user_id, session_id());
+                                mysqli_stmt_execute($stmt);
+
+                                session_regenerate_id(TRUE);
+
+                                // populate session table
+                                $sql = "UPDATE sessions SET session_id = ?, is_locked = 0, attempts = 0 WHERE user_id = ?";
+                                $stmt = mysqli_prepare($link, $sql);
+                                if($stmt === false){
+                                    die("ERROR: Could not connect here. " . mysqli_connect_error());
+                                }
+                                mysqli_stmt_bind_param($stmt ,"si", session_id(), $user_id);
+                                mysqli_stmt_execute($stmt);
+
+
+                                // Store data in session variables
+                                $_SESSION["loggedin"] = true;
+                                $_SESSION["user_id"] = $user_id;
+                                $_SESSION["username"] = $username;
+
+                                // Redirect user to welcome page
+                                header("location: home.php");
+                            } else{
+                                // Display an error message if password is not valid
+                                $sql = "UPDATE sessions SET attempts=attempts+1 WHERE session_id = ?";
+                                $stmt = mysqli_prepare($link,$sql);
+                                mysqli_stmt_bind_param($stmt ,"s", session_id());
+                                mysqli_stmt_execute($stmt);
+
+                                $password_err = "The username or password you entered was not valid.";
+                            }
+                         }
+                      }
+
                 } else{
                     // Display an error message if username doesn't exist
                     $username_err = "The username or password you entered was not valid.";
