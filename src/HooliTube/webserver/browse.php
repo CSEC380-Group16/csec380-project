@@ -48,7 +48,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
         while($row = mysqli_fetch_assoc($result)) {
 
             echo "<video width='800' height='450' controls><source src='videos/" . $row["video_name"] . "' type='video/mp4'>Your browser is bad.</video>";
-            echo "<h2>" . $row["video_name"] . " Uploaded by: ". $row["username"] ."</h2> <br>";
+            echo "<h2 align='center'>" . $row["video_name"] . " Uploaded by: ". $row["username"] ."</h2> <br>";
         }
     } else {
         echo "<h2> Sorry, no vidoes have been uploaded! </h2>";
