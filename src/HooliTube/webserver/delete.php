@@ -11,6 +11,12 @@ if(isset($_POST['delete'])){
     $name = $_POST['videoname'];
     if(unlink("videos/".$name)){
         echo $name." has been deleted!";
+        // Include config file
+        require_once "common.php";
+        $sql = "DELETE FROM videos WHERE video_name = ?";
+        $stmt = mysqli_prepare($link,$sql);
+        mysqli_stmt_bind_param($stmt ,"s", $name);
+        mysqli_stmt_execute($stmt);
     }
     else{
         echo "Could not delete ".$name."!";
@@ -66,7 +72,7 @@ if(isset($_POST['delete'])){
     ?>
 
     <form action="delete.php" method="POST" enctype="multipart/form-data">
-    <div class="col-sm-6">
+    <div class="col-sm-6 col-md-offset-3">
         <div class="form-group">
             <label class="text-danger">Type the FULL name of the video EXACTLY as it appears above for your video to be deleted!</label>
             <input type="text" class="form-control" name="videoname"/>
