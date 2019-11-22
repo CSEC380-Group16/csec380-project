@@ -9,7 +9,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
 
 if(isset($_POST['delete'])){
     $name = $_POST['videoname'];
-    if(unlink("videos/".$name)){
+    if(unlink("videos/".$_SESSION["username"]."/".$name)){
         echo $name." has been deleted!";
         // Include config file
         require_once "common.php";
