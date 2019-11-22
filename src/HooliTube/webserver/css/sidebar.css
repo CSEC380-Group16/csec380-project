@@ -21,7 +21,7 @@
 
   /* Style page content */
   .main {
-    margin-left: 5%; /* Same as the width of the sidebar */
+    margin: auto;
     padding: 0px 10px;
 
   }

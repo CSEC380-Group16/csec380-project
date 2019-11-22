@@ -13,7 +13,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Landing Page</title>
+    <title>Delete Video</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.css">
     <link rel="stylesheet" href="css/sidebar.css">
     <style type="text/css">
@@ -36,6 +36,34 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
     </div>
 
     <div class="main">
+
+    <?php
+    // Include config file
+    require_once "common.php";
+
+    $sql = "SELECT videos.video_name, users.username FROM videos JOIN users ON videos.user_id = users.user_id WHERE users.username = '".$_SESSION["username"]."'";
+    $result = mysqli_query($link, $sql);
+
+    if (mysqli_num_rows($result) > 0) {
+        // output data of each row
+        while($row = mysqli_fetch_assoc($result)) {
+            echo "<h2>". $row["video_name"] ."</h2>";
+        }
+    } else {
+        echo "<h2> You haven't uploaded any videos! </h2>";
+    }
+    ?>
+
+    <form action="delete.php" method="POST" enctype="multipart/form-data">
+    <div class="col-sm-6">
+        <div class="form-group">
+            <label class="text-danger">Type the FULL name of the video EXACTLY as it appears above for your video to be deleted!</label>
+            <input type="text" class="form-control">
+        </div>
+
+        <button type="submit" class="btn btn-danger">Delete</button>
+    </div>
+    </form>
 
     </div>
 

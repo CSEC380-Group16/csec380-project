@@ -45,7 +45,7 @@ if(isset($_POST['submit'])){
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Landing Page</title>
+    <title>Upload Video</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.css">
     <link rel="stylesheet" href="css/sidebar.css">
     <style type="text/css">
