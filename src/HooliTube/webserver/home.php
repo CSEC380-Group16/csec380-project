@@ -23,7 +23,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
 </head>
 <body>
     <div class="page-header">
-        <h1>Welcome to HooliTube, <b><?php echo htmlspecialchars($_SESSION["username"]); ?></b>!</h1>
+        <h1>Welcome to HooliTube!</h1>
     </div>
 
     <div class="sidenav">
@@ -37,7 +37,8 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
     </div>
 
     <div class="main">
-
+	<h3>Hi <?php echo htmlspecialchars($_SESSION["username"]); ?></b>!
+	Hoolitube is a platform where users can upload their own videos or <br> simply browse what others have to offer.</h3>
     </div>
 
 </body>
