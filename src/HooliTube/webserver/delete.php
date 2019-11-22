@@ -7,6 +7,17 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
     exit;
 }
 
+if(isset($_POST['delete'])){
+    $name = $_POST['videoname'];
+    if(unlink("videos/".$name)){
+        echo $name." has been deleted!";
+    }
+    else{
+        echo "Could not delete ".$name."!";
+    }
+
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -58,10 +69,10 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
     <div class="col-sm-6">
         <div class="form-group">
             <label class="text-danger">Type the FULL name of the video EXACTLY as it appears above for your video to be deleted!</label>
-            <input type="text" class="form-control">
+            <input type="text" class="form-control" name="videoname"/>
         </div>
 
-        <button type="submit" class="btn btn-danger">Delete</button>
+        <input type="submit" name="delete" class="btn btn-danger" value="Delete"/>
     </div>
     </form>
 
