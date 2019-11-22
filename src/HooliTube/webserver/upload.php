@@ -69,6 +69,22 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
         if(isset($_POST['byurl'])){
             $url = $_POST['url'];
             echo "<h3 align='center'> Uploaded! </h3>";
+
+            $from_url = 1;
+            $session_id = session_id();
+            $sql = "SELECT user_id FROM sessions WHERE session_id = ?";
+            $stmt = mysqli_prepare($link,$sql);
+            mysqli_stmt_bind_param($stmt, "s", $session_id);
+            mysqli_stmt_execute($stmt);
+            mysqli_stmt_store_result($stmt);
+            mysqli_stmt_bind_result($stmt, $user_id);
+            mysqli_stmt_fetch($stmt);
+
+
+            $sql = "INSERT INTO videos(video_name, user_id, from_url) VALUES(?, ?, ?)";
+            $stmt = mysqli_prepare($link,$sql);
+            mysqli_stmt_bind_param($stmt ,"si", $name, $user_id, $from_url);
+            mysqli_stmt_execute($stmt);
         }
 
         // If an upload by file is given

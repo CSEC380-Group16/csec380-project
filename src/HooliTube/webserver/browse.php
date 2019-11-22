@@ -40,15 +40,21 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
     // Include config file
     require_once "common.php";
 
-    $sql = "SELECT videos.video_name, users.username FROM videos JOIN users ON videos.user_id = users.user_id";
+    $sql = "SELECT videos.video_name, videos.from_url, users.username FROM videos JOIN users ON videos.user_id = users.user_id";
     $result = mysqli_query($link, $sql);
 
     if (mysqli_num_rows($result) > 0) {
         // output data of each row
         while($row = mysqli_fetch_assoc($result)) {
 
-            echo "<video width='800' height='450' controls><source src='videos/" . $_SESSION["username"] . "/" .$row["video_name"] . "' type='video/mp4'>Your browser is bad.</video>";
-            echo "<h3 align='center'>" . $row["video_name"] . " Uploaded by: ". $row["username"] ."</h3> <br>";
+            if($row["from_url"] == 1){
+                echo "<video width='800' height='450' controls><source src='" . $row["video_name"] . "' type='video/mp4'>Your browser is bad.</video>";
+                echo "<h3 align='center'> Video " . $row["video_id"] . " - Uploaded by: ". $row["username"] ."</h3> <br>";
+            }
+            else{
+                echo "<video width='800' height='450' controls><source src='videos/" . $_SESSION["username"] . "/" .$row["video_name"] . "' type='video/mp4'>Your browser is bad.</video>";
+                echo "<h3 align='center'>" . $row["video_name"] . " - Uploaded by: ". $row["username"] ."</h3> <br>";
+            }
         }
     } else {
         echo "<h3 align='center'> Sorry, no videos have been uploaded! </h3>";
