@@ -64,10 +64,10 @@ if(isset($_POST['delete'])){
     if (mysqli_num_rows($result) > 0) {
         // output data of each row
         while($row = mysqli_fetch_assoc($result)) {
-            echo "<h2>". $row["video_name"] ."</h2>";
+            echo "<h3>". $row["video_name"] ."</h3>";
         }
     } else {
-        echo "<h2> You haven't uploaded any videos! </h2>";
+        echo "<h3> You haven't uploaded any videos! </h3>";
     }
     ?>
 

@@ -109,7 +109,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 </head>
 <body>
     <div class="wrapper">
-        <h2 align="center">Welcome to HooliTube!</h2>
+        <h3 align="center">Welcome to HooliTube!</h3>
         <p align="center">Sign up for our totally secure video sharing platform today!</p>
         <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
             <div class="form-group <?php echo (!empty($username_err)) ? 'has-error' : ''; ?>">

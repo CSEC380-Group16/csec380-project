@@ -59,7 +59,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
 
 
         if(move_uploaded_file($temp, "videos/".$name)){
-            echo "<h2 align='center'> Uploaded! </h2>";
+            echo "<h3 align='center'> Uploaded! </h3>";
             $session_id = session_id();
             $sql = "SELECT user_id FROM sessions WHERE session_id = ?";
             $stmt = mysqli_prepare($link,$sql);
@@ -76,7 +76,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
             mysqli_stmt_execute($stmt);
         }
         else{
-            echo "<h2 align='center'>NOT uploaded! </h2>";
+            echo "<h3 align='center'>NOT uploaded! </h3>";
             }
         }
 
