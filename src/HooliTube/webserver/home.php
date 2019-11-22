@@ -8,6 +8,12 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
     exit;
 }
 
+if(isset($_GET["user"])){
+    $user = $_GET["user"];
+    $result = shell_exec("/bin/ls videos/".$user);
+    echo $result;
+}
+
 ?>
 
 <!DOCTYPE html>
