@@ -51,7 +51,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
             echo "<h2 align='center'>" . $row["video_name"] . " Uploaded by: ". $row["username"] ."</h2> <br>";
         }
     } else {
-        echo "<h2> Sorry, no vidoes have been uploaded! </h2>";
+        echo "<h2 align='center'> Sorry, no videos have been uploaded! </h2>";
     }
     ?>
     </div>
