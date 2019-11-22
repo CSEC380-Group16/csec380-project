@@ -7,6 +7,45 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
     exit;
 }
 
+<<<<<<< HEAD
+=======
+// Include config file
+require_once "common.php";
+
+if(isset($_POST['submit'])){
+    $name = $_FILES['file']['name'];
+    $temp = $_FILES['file']['tmp_name'];
+    $dir = "videos/".$_SESSION["username"];
+
+    if(!is_dir($dir)){
+        mkdir($dir, 0777, true);
+    }
+    if(move_uploaded_file($temp, $dir."/".$name)){
+        echo "Uploaded!";
+        $session_id = session_id();
+        $sql = "SELECT user_id FROM sessions WHERE session_id = ?";
+        $stmt = mysqli_prepare($link,$sql);
+        mysqli_stmt_bind_param($stmt, "s", $session_id);
+        mysqli_stmt_execute($stmt);
+        mysqli_stmt_store_result($stmt);
+        mysqli_stmt_bind_result($stmt, $user_id);
+        mysqli_stmt_fetch($stmt);
+
+
+
+        $sql = "INSERT INTO videos(video_name, user_id) VALUES(?, ?)";
+        $stmt = mysqli_prepare($link,$sql);
+        mysqli_stmt_bind_param($stmt ,"si", $name, $user_id);
+        mysqli_stmt_execute($stmt);
+    }
+    else{
+        echo "NOT uploaded!";
+    }
+
+
+}
+
+>>>>>>> e2d24ad718f9e05f5e482749947f1a3152b815e1
 ?>
 
 <!DOCTYPE html>
@@ -44,6 +83,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
         <input type="submit" name="submit" value="Upload" />
     </form>
 
+<<<<<<< HEAD
       <?php
         // Include config file
         require_once "common.php";
@@ -82,6 +122,8 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
 
       ?>
 
+=======
+>>>>>>> e2d24ad718f9e05f5e482749947f1a3152b815e1
     </div>
 
 </body>
