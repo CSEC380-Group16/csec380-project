@@ -79,11 +79,11 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
             mysqli_stmt_store_result($stmt);
             mysqli_stmt_bind_result($stmt, $user_id);
             mysqli_stmt_fetch($stmt);
-
+            
 
             $sql = "INSERT INTO videos(video_name, user_id, from_url) VALUES(?, ?, ?)";
             $stmt = mysqli_prepare($link,$sql);
-            mysqli_stmt_bind_param($stmt ,"si", $name, $user_id, $from_url);
+            mysqli_stmt_bind_param($stmt ,"sii", $url, $user_id, $from_url);
             mysqli_stmt_execute($stmt);
         }
 

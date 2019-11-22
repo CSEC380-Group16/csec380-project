@@ -22,7 +22,7 @@ CREATE TABLE users (
 
 CREATE TABLE videos (
   video_id    INT UNSIGNED AUTO_INCREMENT,
-  video_name  VARCHAR(50),
+  video_name  VARCHAR(510),
   user_id     INT UNSIGNED,
   from_url    TINYINT(1) DEFAULT 0,
 

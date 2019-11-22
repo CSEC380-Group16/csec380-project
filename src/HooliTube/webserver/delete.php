@@ -7,23 +7,6 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
     exit;
 }
 
-if(isset($_POST['delete'])){
-    $name = $_POST['videoname'];
-    if(unlink("videos/".$_SESSION["username"]."/".$name)){
-        echo $name." has been deleted!";
-        // Include config file
-        require_once "common.php";
-        $sql = "DELETE FROM videos WHERE video_name = ?";
-        $stmt = mysqli_prepare($link,$sql);
-        mysqli_stmt_bind_param($stmt ,"s", $name);
-        mysqli_stmt_execute($stmt);
-    }
-    else{
-        echo "Could not delete ".$name."!";
-    }
-
-}
-
 ?>
 
 <!DOCTYPE html>
@@ -58,17 +41,52 @@ if(isset($_POST['delete'])){
     // Include config file
     require_once "common.php";
 
-    $sql = "SELECT videos.video_name, users.username FROM videos JOIN users ON videos.user_id = users.user_id WHERE users.username = '".$_SESSION["username"]."'";
-    $result = mysqli_query($link, $sql);
 
-    if (mysqli_num_rows($result) > 0) {
-        // output data of each row
-        while($row = mysqli_fetch_assoc($result)) {
-            echo "<h3>". $row["video_name"] ."</h3>";
+        if(isset($_POST['delete'])){
+
+            $name = $_POST['videoname'];
+
+            $sql = "SELECT from_url FROM videos WHERE video_name = ?";
+            $stmt = mysqli_prepare($link,$sql);
+            mysqli_stmt_bind_param($stmt ,"s", $name);
+            mysqli_stmt_execute($stmt);
+            mysqli_stmt_store_result($stmt);
+            mysqli_stmt_bind_result($stmt, $from_url);
+            mysqli_stmt_fetch($stmt);
+
+            if ($from_url == 1){
+              echo "<h3 align='center'> Video has been deleted! </h3>";
+              $sql = "DELETE FROM videos WHERE video_name = ?";
+              $stmt = mysqli_prepare($link,$sql);
+              mysqli_stmt_bind_param($stmt ,"s", $name);
+              mysqli_stmt_execute($stmt);
+            }
+            else {
+              if(unlink("videos/".$_SESSION["username"]."/".$name)){
+                  echo "<h3 align='center'> Video has been deleted! </h3>";
+                  $sql = "DELETE FROM videos WHERE video_name = ?";
+                  $stmt = mysqli_prepare($link,$sql);
+                  mysqli_stmt_bind_param($stmt ,"s", $name);
+                  mysqli_stmt_execute($stmt);
+              }
+              else{
+                  echo "<h3 align='center'>Could not delete video! </h3>";
+              }
+            }
         }
-    } else {
-        echo "<h3> You haven't uploaded any videos! </h3>";
-    }
+        else {
+          $sql = "SELECT videos.video_name, users.username FROM videos JOIN users ON videos.user_id = users.user_id WHERE users.username = '".$_SESSION["username"]."'";
+          $result = mysqli_query($link, $sql);
+
+          if (mysqli_num_rows($result) > 0) {
+              // output data of each row
+              while($row = mysqli_fetch_assoc($result)) {
+                  echo "<h3>". $row["video_name"] ."</h3>";
+              }
+          } else {
+              echo "<h3> You haven't uploaded any videos! </h3>";
+          }
+        }
     ?>
 
     <form action="delete.php" method="POST" enctype="multipart/form-data">

@@ -40,7 +40,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
     // Include config file
     require_once "common.php";
 
-    $sql = "SELECT videos.video_name, videos.from_url, users.username FROM videos JOIN users ON videos.user_id = users.user_id";
+    $sql = "SELECT videos.video_name, videos.from_url, users.username, videos.video_id FROM videos JOIN users ON videos.user_id = users.user_id";
     $result = mysqli_query($link, $sql);
 
     if (mysqli_num_rows($result) > 0) {
