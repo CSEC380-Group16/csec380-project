@@ -59,7 +59,6 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
       <?php
         // Include config file
         require_once "common.php";
-
         if (isset($_SERVER["CONTENT_LENGTH"])) {
             if ($_SERVER["CONTENT_LENGTH"] > ((int)ini_get('post_max_size') * 1024 * 1024)) {
                 die("<script>alert('File not uploaded, filesize exceeded 200MB!')</script>");
@@ -70,15 +69,20 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
         if(isset($_POST['byurl'])){
             $url = $_POST['url'];
             echo "<h3 align='center'> Uploaded! </h3>";
-
         }
 
         // If an upload by file is given
         if(isset($_POST['upload'])){
             $name = $_FILES['file']['name'];
             $temp = $_FILES['file']['tmp_name'];
+            $dir = "videos/".$_SESSION["username"];
 
-            if(move_uploaded_file($temp, "videos/".$name)){
+
+            if(!is_dir($dir)){
+                mkdir($dir, 0777, true);
+            }
+            if(move_uploaded_file($temp, $dir."/".$name)){
+
                 echo "<h3 align='center'> Uploaded! </h3>";
                 $session_id = session_id();
                 $sql = "SELECT user_id FROM sessions WHERE session_id = ?";
@@ -97,7 +101,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
             }
             else{
                 echo "<h3 align='center'>NOT uploaded! </h3>";
-                }
+            }
         }
 
       ?>
