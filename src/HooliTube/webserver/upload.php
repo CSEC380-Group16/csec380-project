@@ -13,8 +13,12 @@ require_once "common.php";
 if(isset($_POST['submit'])){
     $name = $_FILES['file']['name'];
     $temp = $_FILES['file']['tmp_name'];
+    $dir = "videos/".$_SESSION["username"];
 
-    if(move_uploaded_file($temp, "videos/".$_SESSION["username"]."/".$name)){
+    if(!is_dir($dir)){
+        mkdir($dir, 0777, true);
+    }
+    if(move_uploaded_file($temp, $dir."/".$name)){
         echo "Uploaded!";
         $session_id = session_id();
         $sql = "SELECT user_id FROM sessions WHERE session_id = ?";
@@ -73,14 +77,6 @@ if(isset($_POST['submit'])){
         <input type="file" name="file" />
         <input type="submit" name="submit" value="Upload" />
     </form>
-
-    <?php
-    // if(isset($_POST['submit'])){
-    //     echo "<br />".$name." has been uploaded.";
-    // }
-
-
-    ?>
 
     </div>
 
