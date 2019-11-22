@@ -14,7 +14,7 @@ if(isset($_POST['submit'])){
     $name = $_FILES['file']['name'];
     $temp = $_FILES['file']['tmp_name'];
 
-    if(move_uploaded_file($temp, "videos/".$name)){
+    if(move_uploaded_file($temp, "videos/".$_SESSION["username"]."/".$name)){
         echo "Uploaded!";
         $session_id = session_id();
         $sql = "SELECT user_id FROM sessions WHERE session_id = ?";
