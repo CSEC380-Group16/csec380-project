@@ -21,9 +21,10 @@
 
   /* Style page content */
   .main {
+    display: block;
     margin: auto;
     padding: 0px 10px;
-
+    width: 1000px;
   }
 
   /* On smaller screens, where height is less than 450px, change the style of the sidebar (less padding and a smaller font size) */
