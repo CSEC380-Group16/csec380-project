@@ -52,7 +52,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
                 echo "<h3 align='center'> Video " . $row["video_id"] . " - Uploaded by: ". $row["username"] ."</h3> <br>";
             }
             else{
-                echo "<video width='800' height='450' controls><source src='videos/" . $_SESSION["username"] . "/" .$row["video_name"] . "' type='video/mp4'>Your browser is bad.</video>";
+                echo "<video width='800' height='450' controls><source src='videos/" . $row["username"] . "/" .$row["video_name"] . "' type='video/mp4'>Your browser is bad.</video>";
                 echo "<h3 align='center'>" . $row["video_name"] . " - Uploaded by: ". $row["username"] ."</h3> <br>";
             }
         }
