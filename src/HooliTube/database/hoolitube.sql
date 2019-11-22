@@ -24,11 +24,7 @@ CREATE TABLE videos (
   video_id    INT UNSIGNED AUTO_INCREMENT,
   video_name  VARCHAR(50),
   user_id     INT UNSIGNED,
-<<<<<<< HEAD
   from_url    TINYINT(1) DEFAULT 0,
-=======
-  url_bool    TINYINT(1) UNSIGNED,
->>>>>>> 151e65bbd7f717d90dc2c6aa7261e4d78b66fc6c
 
   CONSTRAINT videos_video_id_pk PRIMARY KEY(video_id),
   CONSTRAINT videos_user_id_fk FOREIGN KEY(user_id) REFERENCES users(user_id)
