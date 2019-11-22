@@ -37,47 +37,67 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
 
     <div class="main">
 
+    <!-- Upload by URL -->
+    <form action="upload.php" method="POST" enctype="multipart/form-data" class="border-top">
+	<div class="col-sm-4 col-md-offset-2">
+    <label>Upload by URL or upload by file below!</label>
+	<input type="text" class="form-control" name="url" />
+	</div>
+        <input type="submit" name="byurl" value="Upload by URL" />
+    </form>
+
+    <br><br><br><br>
+
+    <!-- Upload by file -->
     <form action="upload.php" method="POST" enctype="multipart/form-data">
 	<div class="col-sm-4 col-md-offset-2">
 	<input type="file" name="file" />
 	</div>
-        <input type="submit" name="submit" value="Upload" />
+        <input type="submit" name="upload" value="Upload by File" />
     </form>
 
       <?php
         // Include config file
         require_once "common.php";
-            if (isset($_SERVER["CONTENT_LENGTH"])) {
-        	    if ($_SERVER["CONTENT_LENGTH"] > ((int)ini_get('post_max_size') * 1024 * 1024)) {
-                	die("<script>alert('File not uploaded, filesize exceeded 200MB!')</script>");
-            	}
-            }
 
-        if(isset($_POST['submit'])){
+        if (isset($_SERVER["CONTENT_LENGTH"])) {
+            if ($_SERVER["CONTENT_LENGTH"] > ((int)ini_get('post_max_size') * 1024 * 1024)) {
+                die("<script>alert('File not uploaded, filesize exceeded 200MB!')</script>");
+            }
+        }
+
+        // If an upload by url is given
+        if(isset($_POST['byurl'])){
+            $url = $_POST['url'];
+            echo "<h3 align='center'> Uploaded! </h3>";
+
+        }
+
+        // If an upload by file is given
+        if(isset($_POST['upload'])){
             $name = $_FILES['file']['name'];
             $temp = $_FILES['file']['tmp_name'];
 
+            if(move_uploaded_file($temp, "videos/".$name)){
+                echo "<h3 align='center'> Uploaded! </h3>";
+                $session_id = session_id();
+                $sql = "SELECT user_id FROM sessions WHERE session_id = ?";
+                $stmt = mysqli_prepare($link,$sql);
+                mysqli_stmt_bind_param($stmt, "s", $session_id);
+                mysqli_stmt_execute($stmt);
+                mysqli_stmt_store_result($stmt);
+                mysqli_stmt_bind_result($stmt, $user_id);
+                mysqli_stmt_fetch($stmt);
 
-        if(move_uploaded_file($temp, "videos/".$name)){
-            echo "<h3 align='center'> Uploaded! </h3>";
-            $session_id = session_id();
-            $sql = "SELECT user_id FROM sessions WHERE session_id = ?";
-            $stmt = mysqli_prepare($link,$sql);
-            mysqli_stmt_bind_param($stmt, "s", $session_id);
-            mysqli_stmt_execute($stmt);
-            mysqli_stmt_store_result($stmt);
-            mysqli_stmt_bind_result($stmt, $user_id);
-            mysqli_stmt_fetch($stmt);
 
-
-            $sql = "INSERT INTO videos(video_name, user_id) VALUES(?, ?)";
-            $stmt = mysqli_prepare($link,$sql);
-            mysqli_stmt_bind_param($stmt ,"si", $name, $user_id);
-            mysqli_stmt_execute($stmt);
-        }
-        else{
-            echo "<h3 align='center'>NOT uploaded! </h3>";
+                $sql = "INSERT INTO videos(video_name, user_id) VALUES(?, ?)";
+                $stmt = mysqli_prepare($link,$sql);
+                mysqli_stmt_bind_param($stmt ,"si", $name, $user_id);
+                mysqli_stmt_execute($stmt);
             }
+            else{
+                echo "<h3 align='center'>NOT uploaded! </h3>";
+                }
         }
 
       ?>
