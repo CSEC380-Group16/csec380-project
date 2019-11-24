@@ -46,6 +46,12 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
 
             $name = $_POST['videoname'];
 
+
+            $sql = "DELETE FROM videos WHERE video_name = ?";
+            $stmt = mysqli_prepare($link,$sql);
+            mysqli_stmt_bind_param($stmt ,"s", $name);
+            mysqli_stmt_execute($stmt);
+
             $sql = "SELECT from_url FROM videos WHERE video_name = ?";
             $stmt = mysqli_prepare($link,$sql);
             mysqli_stmt_bind_param($stmt ,"s", $name);
@@ -54,24 +60,18 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
             mysqli_stmt_bind_result($stmt, $from_url);
             mysqli_stmt_fetch($stmt);
 
+
+
+
             if ($from_url == 1){
-              echo "<h3 align='center'> Video has been deleted! </h3>";
-              $sql = "DELETE FROM videos WHERE video_name = ?";
-              $stmt = mysqli_prepare($link,$sql);
-              mysqli_stmt_bind_param($stmt ,"s", $name);
-              mysqli_stmt_execute($stmt);
+                echo "<h3 align='center'> Video has been deleted! </h3>";
             }
-            else {
-              if(unlink("videos/".$_SESSION["username"]."/".$name)){
-                  echo "<h3 align='center'> Video has been deleted! </h3>";
-                  $sql = "DELETE FROM videos WHERE video_name = ?";
-                  $stmt = mysqli_prepare($link,$sql);
-                  mysqli_stmt_bind_param($stmt ,"s", $name);
-                  mysqli_stmt_execute($stmt);
-              }
-              else{
-                  echo "<h3 align='center'>Could not delete video! </h3>";
-              }
+            elseif ($from_url == 0){
+                unlink("videos/".$_SESSION["username"]."/".$name);
+                echo "<h3 align='center'> Video has been deleted! </h3>";
+            }
+            else{
+                echo "<h3 align='center'>Could not delete video! </h3>";
             }
         }
         else {
